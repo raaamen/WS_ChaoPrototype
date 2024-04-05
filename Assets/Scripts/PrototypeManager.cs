@@ -30,8 +30,7 @@ public class PrototypeManager : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        rotList = GameObject.FindGameObjectsWithTag("Rot");
-        chaoList = GameObject.FindGameObjectsWithTag("Spark");
+        CollectRotAndSparks();
     }
     
     // Start is called before the first frame update
