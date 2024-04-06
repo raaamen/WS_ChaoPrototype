@@ -50,6 +50,9 @@ public class PrototypeManager : MonoBehaviour
         combatStarted = true;
         CollectRotAndSparks();
         
+        if (chaoList.Length==0){
+            return;
+        }
 
         foreach (var item in chaoList)
         {
@@ -68,8 +71,12 @@ public class PrototypeManager : MonoBehaviour
                 break;
 
                 case SparkScript.AttackType.farthest:
+
+                item.GetComponent<SparkScript>().currentTarget = ReturnFarthestRot(item);
+
                 break;
                 case SparkScript.AttackType.closest:
+                item.GetComponent<SparkScript>().currentTarget = ReturnClosestRot(item);
                 break;
                 case SparkScript.AttackType.nothing:
 
@@ -77,6 +84,8 @@ public class PrototypeManager : MonoBehaviour
             }
         }
     }
+
+    
 
     public GameObject ReturnStrongestRot(){
         if (rotList.Length==0){
@@ -115,13 +124,42 @@ public class PrototypeManager : MonoBehaviour
         if (rotList.Length==0){
             return null;
         }
-        return null;
+        GameObject farthestRot = null;
+        float maxdistance = 0;
+        float distance = 0;
+
+        foreach (var item in rotList){
+            distance = Vector3.Distance (item.transform.position, spark.transform.position);
+            if (distance > maxdistance){
+                maxdistance = distance;
+                farthestRot = item;
+            }
+
+        }
+
+        return farthestRot;
     }
     public GameObject ReturnClosestRot(GameObject spark){
         if (rotList.Length==0){
             return null;
         }
-        return null;
+
+        
+        GameObject closest = null;
+        float mindistance = Vector3.Distance (rotList[0].transform.position, spark.transform.position);
+        float distance = 0;
+
+        foreach (var item in rotList){
+            distance = Vector3.Distance (item.transform.position, spark.transform.position);
+            if (distance < mindistance){
+                mindistance = distance;
+                closest = item;
+            }
+
+        }
+
+        return closest;
+
     }
 
     public void CollectRotAndSparks(){

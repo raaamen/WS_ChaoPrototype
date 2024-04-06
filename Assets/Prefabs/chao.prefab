@@ -450,6 +450,10 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Weakest
       m_Image: {fileID: 0}
+    - m_Text: Closest
+      m_Image: {fileID: 0}
+    - m_Text: Farthest
+      m_Image: {fileID: 0}
     - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:

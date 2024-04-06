@@ -94,6 +94,12 @@ public class SparkScript : MonoBehaviour
             attackType = AttackType.weakest;
             break;
             case 2:
+            attackType = AttackType.closest;
+            break;
+            case 3:
+            attackType = AttackType.farthest;
+            break;
+            case 4:
             attackType = AttackType.nothing;
             break;
         }
