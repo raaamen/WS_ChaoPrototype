@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class SparkScript : MonoBehaviour
 {
+
+    public Button helpButton;
+
     public float fightTime;
     public GameObject fightCloud;
 
@@ -79,7 +82,16 @@ public class SparkScript : MonoBehaviour
         Debug.Log("Fighting");
         GameObject.Find("PrototypeManager").GetComponent<PrototypeManager>().AssistSparks();
         fightCloud.SetActive(true);
+
+        //helpButton.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(fightTime);
+
+        //Help out chao here, raises percentage of win
+
+
+
+
         
         //this can be percentage based
         if (sparkLevel >= currentTarget.GetComponent<RotScript>().rotLevel){
@@ -140,6 +152,11 @@ public class SparkScript : MonoBehaviour
             dropdown.value = 4;
             break;
         }
+    }
+
+    bool CalculateWin(int sparkLevel, int rotLevel){
+
+        return false;
     }
 
 
