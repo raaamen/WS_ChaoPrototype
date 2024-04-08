@@ -167,4 +167,8 @@ public class PrototypeManager : MonoBehaviour
         chaoList = GameObject.FindGameObjectsWithTag("Spark");
     }
 
+    public void AssistSparks(){
+
+    }
+
 }

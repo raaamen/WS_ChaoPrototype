@@ -66,7 +66,10 @@ public class SparkScript : MonoBehaviour
     }
 
     IEnumerator FightSpark(){
+        GameObject.Find("PrototypeManager").GetComponent<PrototypeManager>().AssistSparks();
         yield return new WaitForSeconds(2);
+        
+        //this can be percentage based
         if (sparkLevel >= currentTarget.GetComponent<RotScript>().rotLevel){
             Debug.Log("Spark wins");
             Destroy(currentTarget);
