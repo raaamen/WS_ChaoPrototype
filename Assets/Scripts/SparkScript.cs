@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class SparkScript : MonoBehaviour
 {
+    public float fightTime;
+    public GameObject fightCloud;
 
     public int sparkLevel;
 
@@ -32,7 +34,7 @@ public class SparkScript : MonoBehaviour
     void Start()
     {
         startingSpot = transform.position;
-        
+        InitAttackType();
     }
 
     // Update is called once per frame
@@ -41,11 +43,19 @@ public class SparkScript : MonoBehaviour
         sparkLevelText.text = "Spark Level: "+sparkLevel;
         if (currentTarget != null){
             Debug.Log("Current Target "+currentTarget.gameObject.name);
-            transform.position = currentTarget.transform.position;
+            //transform.position = currentTarget.transform.position;
+            Debug.Log("Moving from "+transform.position+" to "+currentTarget.transform.position);
+            var step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget.transform.position, step);
+            if (transform.position == currentTarget.transform.position){
+                StartCoroutine("FightSpark");
+            }
             
         }
         else{
-            transform.position = startingSpot;
+            var step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, startingSpot, step);
+            
         }
     }
 
@@ -59,15 +69,17 @@ public class SparkScript : MonoBehaviour
     {
         Debug.Log("Colliding with "+other.gameObject.name);
         if (other.gameObject == currentTarget){
-            Debug.Log("Spark fighting target");
-            StartCoroutine("FightSpark");
+            
+            //StartCoroutine("FightSpark");
             
         }
     }
 
     IEnumerator FightSpark(){
+        Debug.Log("Fighting");
         GameObject.Find("PrototypeManager").GetComponent<PrototypeManager>().AssistSparks();
-        yield return new WaitForSeconds(2);
+        fightCloud.SetActive(true);
+        yield return new WaitForSeconds(fightTime);
         
         //this can be percentage based
         if (sparkLevel >= currentTarget.GetComponent<RotScript>().rotLevel){
@@ -81,12 +93,14 @@ public class SparkScript : MonoBehaviour
             sparkLevel--;
             currentTarget=null;
         }
+        fightCloud.SetActive(false);
         yield return null;
     }
 
     public void ChangeLevel(int change){
         sparkLevel+=change;
     }
+    
     public void ChangeAttackType(){
         Debug.Log("Attack Type Changed");
         switch(dropdown.value){
@@ -104,6 +118,26 @@ public class SparkScript : MonoBehaviour
             break;
             case 4:
             attackType = AttackType.nothing;
+            break;
+        }
+    }
+
+    public void InitAttackType(){
+        switch(attackType){
+            case AttackType.strongest:
+            dropdown.value = 0;
+            break;
+            case AttackType.weakest:
+            dropdown.value = 1;
+            break;
+            case AttackType.farthest:
+            dropdown.value = 2;
+            break;
+            case AttackType.closest:
+            dropdown.value = 3;
+            break;
+            case AttackType.nothing:
+            dropdown.value = 4;
             break;
         }
     }

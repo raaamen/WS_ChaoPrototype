@@ -103,6 +103,7 @@ public class PrototypeManager : MonoBehaviour
         Debug.Log(highestRot.GetComponent<RotScript>().rotLevel);
         return highestRot;
     }
+
     public GameObject ReturnWeakestRot(){
         if (rotList.Length==0){
             return null;
@@ -120,6 +121,7 @@ public class PrototypeManager : MonoBehaviour
         Debug.Log(lowestRot.GetComponent<RotScript>().rotLevel);
         return lowestRot;
     }
+    
     public GameObject ReturnFarthestRot(GameObject spark){
         if (rotList.Length==0){
             return null;
@@ -139,6 +141,7 @@ public class PrototypeManager : MonoBehaviour
 
         return farthestRot;
     }
+
     public GameObject ReturnClosestRot(GameObject spark){
         if (rotList.Length==0){
             return null;

@@ -1053,8 +1053,12 @@ PrefabInstance:
       value: chao (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6885189555275317933, guid: f91cd1d9c58cd41de8b955532efc6d9e, type: 3}
+      propertyPath: speed
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6885189555275317933, guid: f91cd1d9c58cd41de8b955532efc6d9e, type: 3}
       propertyPath: attackType
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6885189555275317933, guid: f91cd1d9c58cd41de8b955532efc6d9e, type: 3}
       propertyPath: sparkLevel
@@ -2049,8 +2053,12 @@ PrefabInstance:
       value: chao (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6885189555275317933, guid: f91cd1d9c58cd41de8b955532efc6d9e, type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6885189555275317933, guid: f91cd1d9c58cd41de8b955532efc6d9e, type: 3}
       propertyPath: attackType
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6885189555275317933, guid: f91cd1d9c58cd41de8b955532efc6d9e, type: 3}
       propertyPath: sparkLevel
