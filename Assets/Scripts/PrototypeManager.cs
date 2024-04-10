@@ -48,6 +48,7 @@ public class PrototypeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CollectRotAndSparks();
         CheckBattleStatusRot();
         CheckBattleStatusSpark();   
     }
@@ -114,7 +115,7 @@ public class PrototypeManager : MonoBehaviour
                 item.GetComponent<SparkScript>().currentTarget = ReturnClosestRot(item);
                 break;
                 case SparkScript.AttackType.nothing:
-
+                item.GetComponent<SparkScript>().fighting=false;
                 break;
             }
         }
@@ -234,7 +235,7 @@ public class PrototypeManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         StartRotCombat();
         yield return new WaitUntil(() => rotBattling == false);
-
+        battleText.text = "Battle Done";
 
         yield return null;
     }

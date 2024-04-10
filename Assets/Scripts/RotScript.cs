@@ -24,10 +24,13 @@ public class RotScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        
         rotLevelText.text = "Rot Level: "+rotLevel;
 
         if (target != null){
             Debug.Log("Rot Current Target "+target.gameObject.name);
+            
             //transform.position = currentTarget.transform.position;
             //Debug.Log("Moving from "+transform.position+" to "+target.transform.position);
             var step = speed * Time.deltaTime;
@@ -49,20 +52,34 @@ public class RotScript : MonoBehaviour
         fightCloud.SetActive(true);
         yield return new WaitForSeconds(fightTime);
         
-        var win = CalculateWin(target.GetComponent<SparkScript>().sparkLevel, rotLevel);
-
-        
-        if (win){
+        if (target != null){
+            var win = CalculateWin(target.GetComponent<SparkScript>().sparkLevel, rotLevel);
+            if (win){
             Debug.Log("Rot wins");
-            Destroy(target);
-            target=null;
-        }
-        else {
-            Debug.Log("Rot loses");
             target.GetComponent<SparkScript>().sparkLevel--;
-            rotLevel--;
-            target=null;
+                if (target.GetComponent<SparkScript>().sparkLevel <= 0){
+                    Destroy(target);
+                    fightCloud.SetActive(false);
+                    fighting=false;
+                    yield return null;
+                }
+            }
+            else {
+                Debug.Log("Rot loses");
+                target.GetComponent<SparkScript>().sparkLevel--;
+                rotLevel--;
+                if (target.GetComponent<SparkScript>().sparkLevel <= 0){
+                        Destroy(target);
+                        fightCloud.SetActive(false);
+                        fighting=false;
+                        yield return null;
+                    
+                    }
+            }
         }
+        
+        target=null;
+
         fightCloud.SetActive(false);
         fighting=false;
         yield return null;

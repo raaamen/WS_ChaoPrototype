@@ -44,6 +44,9 @@ public class SparkScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        
+
         sparkLevelText.text = "Spark Level: "+sparkLevel;
         if (currentTarget != null){
             Debug.Log("Current Target "+currentTarget.gameObject.name);
@@ -69,15 +72,7 @@ public class SparkScript : MonoBehaviour
     /// collider (2D physics only).
     /// </summary>
     /// <param name="other">The Collision2D data associated with this collision.</param>
-    void OnCollisionEnter2D(Collision2D other)
-    {
-        Debug.Log("Colliding with "+other.gameObject.name);
-        if (other.gameObject == currentTarget){
-            
-            //StartCoroutine("FightSpark");
-            
-        }
-    }
+    
 
     IEnumerator FightSpark(){
         fighting=true;
@@ -91,20 +86,34 @@ public class SparkScript : MonoBehaviour
 
         //Help out chao here, raises percentage of win
 
-        var win = CalculateWin(sparkLevel, currentTarget.GetComponent<RotScript>().rotLevel);
-
-        //this can be percentage based
-        if (win){
+        if (currentTarget != null){
+            var win = CalculateWin(sparkLevel, currentTarget.GetComponent<RotScript>().rotLevel);
+            if (win){
             Debug.Log("Spark wins");
-            Destroy(currentTarget);
-            currentTarget=null;
-        }
-        else {
-            Debug.Log("Spark loses");
             currentTarget.GetComponent<RotScript>().rotLevel--;
-            sparkLevel--;
-            currentTarget=null;
+                if (currentTarget.GetComponent<RotScript>().rotLevel <= 0){
+                    Destroy(currentTarget);
+                    fightCloud.SetActive(false);
+                    fighting=false;
+                    yield return null;
+                }
+            }
+            else {
+                Debug.Log("Spark loses");
+                currentTarget.GetComponent<RotScript>().rotLevel--;
+                sparkLevel--;
+                if (currentTarget.GetComponent<RotScript>().rotLevel <= 0){
+                        Destroy(currentTarget);
+                        fightCloud.SetActive(false);
+                        fighting=false;
+                        yield return null;
+                    
+                    }
+            }
         }
+        
+        currentTarget=null;
+
         fightCloud.SetActive(false);
         fighting=false;
         yield return null;

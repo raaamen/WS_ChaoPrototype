@@ -2260,8 +2260,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8166674324356060249, guid: fac035ce5c37e4e5584d9c3819f45100, type: 3}
+      propertyPath: speed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166674324356060249, guid: fac035ce5c37e4e5584d9c3819f45100, type: 3}
       propertyPath: rotLevel
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166674324356060249, guid: fac035ce5c37e4e5584d9c3819f45100, type: 3}
+      propertyPath: fightTime
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
