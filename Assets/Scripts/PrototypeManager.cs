@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PrototypeManager : MonoBehaviour
 {
+
 
     
 
     //Notes
     //auto battler but make the player feel like they're helping
 
+    public TMP_Text battleText;
 
     //UI
     
@@ -23,6 +26,9 @@ public class PrototypeManager : MonoBehaviour
 
     [SerializeField]
     private bool combatStarted;
+
+    public bool sparkBattling;
+    public bool rotBattling;
 
     
     /// <summary>
@@ -42,12 +48,38 @@ public class PrototypeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        CheckBattleStatusRot();
+        CheckBattleStatusSpark();   
     }
 
-    public void StartCombat(){
+    public void CheckBattleStatusSpark(){
+        CollectRotAndSparks();
+        int amtDoneFighting = 0;
+        foreach (var item in chaoList)
+        {
+            if (item.GetComponent<SparkScript>().fighting==false) amtDoneFighting++;
+        }
+        if (amtDoneFighting == chaoList.Length){
+            sparkBattling=false;
+        }
+    }
+
+    public void CheckBattleStatusRot(){
+        CollectRotAndSparks();
+        int amtDoneFighting = 0;
+        foreach (var item in rotList)
+        {
+            if (item.GetComponent<RotScript>().fighting==false) amtDoneFighting++;
+        }
+        if (amtDoneFighting == rotList.Length){
+            rotBattling = false;
+        }
+    }
+
+    public void StartSparkCombat(){
+        sparkBattling = true;
         Debug.Log("Combat started");
-        combatStarted = true;
+        
         CollectRotAndSparks();
         
         if (chaoList.Length==0){
@@ -56,6 +88,9 @@ public class PrototypeManager : MonoBehaviour
 
         foreach (var item in chaoList)
         {
+
+
+
             Debug.Log(item.gameObject.name);
             switch(item.GetComponent<SparkScript>().attackType){
                 case SparkScript.AttackType.strongest:
@@ -100,7 +135,7 @@ public class PrototypeManager : MonoBehaviour
                 highestRot = item;
             }   
         }
-        Debug.Log(highestRot.GetComponent<RotScript>().rotLevel);
+        Debug.Log("Weakest Rot: "+highestRot.gameObject.name+" at level "+highestRot.GetComponent<RotScript>().rotLevel);
         return highestRot;
     }
 
@@ -118,7 +153,7 @@ public class PrototypeManager : MonoBehaviour
                 lowestRot = item;
             }   
         }
-        Debug.Log(lowestRot.GetComponent<RotScript>().rotLevel);
+        Debug.Log("Weakest Rot: "+lowestRot.gameObject.name+" at level "+lowestRot.GetComponent<RotScript>().rotLevel);
         return lowestRot;
     }
     
@@ -138,7 +173,7 @@ public class PrototypeManager : MonoBehaviour
             }
 
         }
-
+        Debug.Log("Farthest Rot: "+farthestRot.gameObject.name+" at distance "+Vector3.Distance(spark.transform.position, farthestRot.transform.position));
         return farthestRot;
     }
 
@@ -160,7 +195,7 @@ public class PrototypeManager : MonoBehaviour
             }
 
         }
-
+        Debug.Log("Closest Rot: "+closest.gameObject.name+" at distance "+Vector3.Distance(spark.transform.position, closest.transform.position));
         return closest;
 
     }
@@ -172,6 +207,36 @@ public class PrototypeManager : MonoBehaviour
 
     public void AssistSparks(){
 
+    }
+
+    
+
+    public void StartRotCombat(){
+        foreach (var item in rotList)
+        {
+            //chooses random spark
+            GameObject randomTarget = chaoList[Random.Range(0,chaoList.Length)];
+            item.GetComponent<RotScript>().target = randomTarget;
+        }
+    }
+
+    public void ButtonStartCoroutine(string coroutine){
+        StartCoroutine(coroutine);
+    }
+
+    public IEnumerator SparkBattle(){
+        CollectRotAndSparks();
+        battleText.text = "Spark Battling";
+        StartSparkCombat();
+        yield return new WaitUntil(() => sparkBattling == false);
+        CollectRotAndSparks();
+        battleText.text = "Rot Battling";
+        yield return new WaitForSeconds(1);
+        StartRotCombat();
+        yield return new WaitUntil(() => rotBattling == false);
+
+
+        yield return null;
     }
 
 }

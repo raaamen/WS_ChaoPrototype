@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class SparkScript : MonoBehaviour
 {
+    public bool fighting;
 
     public Button helpButton;
 
@@ -47,7 +48,7 @@ public class SparkScript : MonoBehaviour
         if (currentTarget != null){
             Debug.Log("Current Target "+currentTarget.gameObject.name);
             //transform.position = currentTarget.transform.position;
-            Debug.Log("Moving from "+transform.position+" to "+currentTarget.transform.position);
+            //Debug.Log("Moving from "+transform.position+" to "+currentTarget.transform.position);
             var step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, currentTarget.transform.position, step);
             if (transform.position == currentTarget.transform.position){
@@ -79,6 +80,7 @@ public class SparkScript : MonoBehaviour
     }
 
     IEnumerator FightSpark(){
+        fighting=true;
         Debug.Log("Fighting");
         GameObject.Find("PrototypeManager").GetComponent<PrototypeManager>().AssistSparks();
         fightCloud.SetActive(true);
@@ -89,12 +91,10 @@ public class SparkScript : MonoBehaviour
 
         //Help out chao here, raises percentage of win
 
+        var win = CalculateWin(sparkLevel, currentTarget.GetComponent<RotScript>().rotLevel);
 
-
-
-        
         //this can be percentage based
-        if (sparkLevel >= currentTarget.GetComponent<RotScript>().rotLevel){
+        if (win){
             Debug.Log("Spark wins");
             Destroy(currentTarget);
             currentTarget=null;
@@ -106,6 +106,7 @@ public class SparkScript : MonoBehaviour
             currentTarget=null;
         }
         fightCloud.SetActive(false);
+        fighting=false;
         yield return null;
     }
 
@@ -133,7 +134,6 @@ public class SparkScript : MonoBehaviour
             break;
         }
     }
-
     public void InitAttackType(){
         switch(attackType){
             case AttackType.strongest:
@@ -154,9 +154,39 @@ public class SparkScript : MonoBehaviour
         }
     }
 
-    bool CalculateWin(int sparkLevel, int rotLevel){
+    bool CalculateWin(int spark, int rotLevel){
 
-        return false;
+        if (spark > rotLevel){
+            //spark wins
+            return true;
+        }
+        else if (spark == rotLevel){
+            //spark loses because it's attacking
+            return false;
+        }
+        
+        else return false;
+
+        /*
+
+        float sparkRateToWin = 0;
+
+
+        if (spark == rotLevel){
+            //if they're the same level, win rate is 50%
+            sparkRateToWin = 0.5f;
+        }
+
+        else if (spark > rotLevel){
+            
+        }
+
+        var random = UnityEngine.Random.Range(0, 1);
+        if (random >= sparkRateToWin){
+            return true;
+        }
+        else return false;
+        */
     }
 
 
