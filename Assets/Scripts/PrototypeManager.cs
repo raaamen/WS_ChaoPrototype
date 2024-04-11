@@ -63,6 +63,7 @@ public class PrototypeManager : MonoBehaviour
         if (amtDoneFighting == chaoList.Length){
             sparkBattling=false;
         }
+        Debug.Log("Sparks are done fighting");
     }
 
     public void CheckBattleStatusRot(){
@@ -75,6 +76,7 @@ public class PrototypeManager : MonoBehaviour
         if (amtDoneFighting == rotList.Length){
             rotBattling = false;
         }
+        Debug.Log("Rots are done fighting");
     }
 
     public void StartSparkCombat(){
@@ -230,9 +232,10 @@ public class PrototypeManager : MonoBehaviour
         battleText.text = "Spark Battling";
         StartSparkCombat();
         yield return new WaitUntil(() => sparkBattling == false);
+        Debug.Log("Spark Battling False");
         CollectRotAndSparks();
         battleText.text = "Rot Battling";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         StartRotCombat();
         yield return new WaitUntil(() => rotBattling == false);
         battleText.text = "Battle Done";
